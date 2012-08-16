@@ -58,6 +58,7 @@ typedef struct _SocketOptions
   gint rcvbuf;
   gint broadcast;
   gint keepalive;
+  gint keepalive_time;
 } SocketOptions;
 
 gboolean afsocket_setup_socket(gint fd, SocketOptions *sock_options, AFSocketDirection dir);
@@ -78,6 +79,7 @@ struct _AFSocketSourceDriver
   gint max_connections;
   gint num_connections;
   gint listen_backlog;
+  gint keepalive_timeout;
   GList *connections;
   SocketOptions *sock_options_ptr;
 

@@ -43,6 +43,7 @@
 #include <arpa/inet.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <netinet/tcp.h>
 
 #if ENABLE_TCP_WRAPPER
 #include <tcpd.h>
@@ -79,6 +80,8 @@ afsocket_setup_socket(gint fd, SocketOptions *sock_options, AFSocketDirection di
         setsockopt(fd, SOL_SOCKET, SO_BROADCAST, &sock_options->broadcast, sizeof(sock_options->broadcast));
     }
   setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, &sock_options->keepalive, sizeof(sock_options->keepalive));
+  if (sock_options->keepalive_time > 0)
+    setsockopt(fd, SOL_TCP, TCP_KEEPIDLE, &sock_options->keepalive_time, sizeof(sock_options->keepalive_time));
   return TRUE;
 }
 
@@ -383,6 +386,14 @@ afsocket_sd_set_keep_alive(LogDriver *s, gint enable)
     self->flags |= AFSOCKET_KEEP_ALIVE;
   else
     self->flags &= ~AFSOCKET_KEEP_ALIVE;
+}
+
+void
+afsocket_sd_set_keep_alive_time(LogDriver *s, gint timeout)
+{
+  AFSocketSourceDriver *self = (AFSocketSourceDriver *) s;
+
+  self->keepalive_timeout = timeout;
 }
 
 void
