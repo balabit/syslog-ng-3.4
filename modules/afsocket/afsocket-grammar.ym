@@ -83,6 +83,7 @@ TLSContext *last_tls_context;
 %token KW_SO_SNDBUF
 %token KW_SO_RCVBUF
 %token KW_SO_KEEPALIVE
+%token KW_TCP_KEEP_ALIVE_TIME
 %token KW_SPOOF_SOURCE
 
 %token KW_KEEP_ALIVE
@@ -252,6 +253,7 @@ source_afinet_tcp_option
 
 source_afsocket_stream_params
 	: KW_KEEP_ALIVE '(' yesno ')'		{ afsocket_sd_set_keep_alive(last_driver, $3); }
+        | KW_TCP_KEEP_ALIVE_TIME '(' LL_NUMBER ')' { afsocket_sd_set_keep_alive_time(last_driver, $3); }
 	| KW_MAX_CONNECTIONS '(' LL_NUMBER ')'	{ afsocket_sd_set_max_connections(last_driver, $3); }
 	;
 
