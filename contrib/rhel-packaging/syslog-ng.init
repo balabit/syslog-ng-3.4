@@ -13,7 +13,7 @@
 # Source function library.
 . /etc/init.d/functions
 
-binary="/sbin/syslog-ng"
+binary="/usr/local/sbin/syslog-ng"
 
 [ -x $binary ] || exit 0
 
